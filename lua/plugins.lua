@@ -10,6 +10,16 @@ return require('packer').startup(function()
           'nvim-telescope/telescope.nvim',
           requires = { {'nvim-lua/plenary.nvim'} }
         }
+        require("telescope").load_extension("emoji")
+        
+        use {
+          'xiyaowong/telescope-emoji.nvim',
+          requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"},
+        }
+        -- require('telescope.builtin').builtin({include_extensions = true})
+        vim.keymap.set('n', '<leader>t', function()
+          require('telescope.builtin').builtin { include_extensions = true }
+        end)
 
         -- treesitter
 
@@ -33,6 +43,7 @@ return require('packer').startup(function()
         }
         require('nvim-tree').setup({
             update_focused_file = {enable = true, update_cwd = false}, 
+            hijack_cursor = true,
             open_on_tab = true,
             git = {ignore = false},
             renderer = { indent_markers = { enable = true } },
@@ -63,10 +74,32 @@ return require('packer').startup(function()
             requires = { 'kyazdani42/nvim-web-devicons', opt = true }
         }
         require('lualine').setup({
-                options = {
-                        theme = 'horizon'
+            options = {
+                theme = 'horizon'
+            },
+            sections = {
+                lualine_x = { 
+                    require('weather.lualine').default_c({}) 
                 }
+            }
         })
+
+        -- weather.nvim
+        use {
+            'wyattjsmith1/weather.nvim',
+            requires = {
+                "nvim-lua/plenary.nvim",
+            }
+        }
+
+        require'weather'.setup {
+            openweathermap = {
+            app_id = {
+                value = "b06e759f9769b38583ee0a79998b3ca9"
+            }
+            },
+            weather_icons = require('weather.other_icons').nerd_font,
+        }
 
         -- bufferline
         use {

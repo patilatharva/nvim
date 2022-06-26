@@ -104,6 +104,11 @@ _G.packer_plugins = {
     path = "/Users/atharvapatil/.local/share/nvim/site/pack/packer/start/startup.nvim",
     url = "https://github.com/startup-nvim/startup.nvim"
   },
+  ["telescope-emoji.nvim"] = {
+    loaded = true,
+    path = "/Users/atharvapatil/.local/share/nvim/site/pack/packer/start/telescope-emoji.nvim",
+    url = "https://github.com/xiyaowong/telescope-emoji.nvim"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/Users/atharvapatil/.local/share/nvim/site/pack/packer/start/telescope.nvim",
@@ -118,6 +123,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/atharvapatil/.local/share/nvim/site/pack/packer/start/tokyonight.nvim",
     url = "https://github.com/folke/tokyonight.nvim"
+  },
+  ["weather.nvim"] = {
+    loaded = true,
+    path = "/Users/atharvapatil/.local/share/nvim/site/pack/packer/start/weather.nvim",
+    url = "https://github.com/wyattjsmith1/weather.nvim"
   }
 }
 

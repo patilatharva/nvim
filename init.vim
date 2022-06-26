@@ -11,7 +11,8 @@ Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-lua/plenary.nvim'
-
+" lingua-franca
+Plug 'lf-lang/lingua-franca.vim'
 " devicons
 Plug 'kyazdani42/nvim-web-devicons'
 
@@ -32,7 +33,7 @@ map <C-L> :bd<CR>
 "map <C-l> :bd \| :bp<CR>
 
 " ====================== telescope ======================
-nnoremap <leader>t :Telescope<CR>
+" nnoremap <leader>t :Telescope<CR>
 nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
