@@ -1,14 +1,46 @@
 return require('packer').startup(function()
         -- themes
         use 'folke/tokyonight.nvim'
+        require('tokyonight').setup({
+            styles = {
+                comments = { italic = true },
+            }
+        })
+        
         use 'tiagovla/tokyodark.nvim'
+        use 'bluz71/vim-nightfly-guicolors'
+        use({
+            'rose-pine/neovim',
+            as = 'rose-pine',
+            tag = 'v1.*',
+        })
+        use "EdenEast/nightfox.nvim"
 
-        vim.cmd[[colorscheme tokyodark]]
+        use 'marko-cerovac/material.nvim'
+        vim.g.material_style = "deep ocean"
+        require('material').setup({
+            contrast = {
+                floating_windows = true,
+                -- non_current_windows = true
+            },
+            italics = {
+                comments = true,
+            },
+            high_visibility = {
+                darker = true
+            }
+        })
+
+        vim.cmd[[colorscheme tokyonight-night]]
 
         -- telescope
         use {
           'nvim-telescope/telescope.nvim',
-          requires = { {'nvim-lua/plenary.nvim'} }
+          requires = { 
+                  'nvim-lua/plenary.nvim',
+                  'nvim-treesitter/nvim-treesitter'
+                        
+          }
         }
         require("telescope").load_extension("emoji")
         
@@ -28,9 +60,17 @@ return require('packer').startup(function()
           run = ':TSUpdate'
         }        
 
+        require'nvim-treesitter.configs'.setup {
+            highlight = {                                                                 
+                 enable = true,                                                            
+                 additional_vim_regex_highlighting = {'org', 'python'}, -- Required for spellcheck, s
+             },                                                                            
+             ensure_installed = {'org', 'python'}, -- Or run :TSUpdate org
+        }
+
         -- devicons
         require'nvim-web-devicons'.setup {
-                default = true;
+            default = true
         }
 
         -- nvim-tree
@@ -59,7 +99,8 @@ return require('packer').startup(function()
                         {key = "<CR>",          action = "tabnew"}
                     }
                 }
-            }
+            },
+            filters = {dotfiles = true}
         })
         -- startup.nvim
         use {
@@ -76,15 +117,18 @@ return require('packer').startup(function()
         require('lualine').setup({
             options = {
                 theme = 'horizon'
-            },
+            }, 
+            --[[
             sections = {
                 lualine_x = { 
                     require('weather.lualine').default_c({}) 
                 }
             }
+            --]]
         })
 
-        -- weather.nvim
+        
+        --[[ weather.nvim
         use {
             'wyattjsmith1/weather.nvim',
             requires = {
@@ -100,6 +144,7 @@ return require('packer').startup(function()
             },
             weather_icons = require('weather.other_icons').nerd_font,
         }
+        ]]--
 
         -- bufferline
         use {
@@ -124,4 +169,148 @@ return require('packer').startup(function()
                 -- separator_style = "slant"
             }
         }
+
+        -- LSP configs
+        use 'neovim/nvim-lspconfig' -- Configurations for Nvim LSP
+        require'lspconfig'.clangd.setup{}
+        require'lspconfig'.pyright.setup{}
+        require'lspconfig'.jdtls.setup{
+           cmd = { 'jdtls' },
+           root_dir = function(fname)
+              return require'lspconfig'.util.root_pattern('pom.xml', 'gradle.build', '.git')(fname) or vim.fn.getcwd()
+           end
+        }
+
+        -- Mappings.
+        -- See `:help vim.diagnostic.*` for documentation on any of the below functions
+        local opts = { noremap=true, silent=true }
+        vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+        vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+        vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+
+        -- Use an on_attach function to only map the following keys
+        -- after the language server attaches to the current buffer
+        local on_attach = function(client, bufnr)
+          -- Enable completion triggered by <c-x><c-o>
+          vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+          -- Mappings.
+          -- See `:help vim.lsp.*` for documentation on any of the below functions
+          local bufopts = { noremap=true, silent=true, buffer=bufnr }
+          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+          -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+          vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+          vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+          -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+          vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+          vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+          vim.keymap.set('n', '<space>wl', function()
+            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+          end, bufopts)
+          vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+          vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+          vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+          -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+          -- vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
+        end
+
+        local lsp_flags = {
+          -- This is the default in Nvim 0.7+
+          debounce_text_changes = 150,
+        }
+        require('lspconfig')['pyright'].setup{
+            on_attach = on_attach,
+            flags = lsp_flags,
+        }
+        require('lspconfig')['tsserver'].setup{
+            on_attach = on_attach,
+            flags = lsp_flags,
+        }
+        require('lspconfig')['rust_analyzer'].setup{
+            on_attach = on_attach,
+            flags = lsp_flags,
+            -- Server-specific settings...
+            settings = {
+              ["rust-analyzer"] = {}
+            }
+        }
+
+        -- gitsigns
+        use {
+          'lewis6991/gitsigns.nvim',
+          config = function()
+            require('gitsigns').setup()
+          end
+        }
+        -- TODO: keybindings
+
+        -- nvim-scrollbar
+        use("petertriho/nvim-scrollbar")
+        require("scrollbar").setup()
+
+
+        -- orgmode
+        use {'nvim-orgmode/orgmode', config = function()
+                require('orgmode').setup{}
+            end
+        }
+
+        -- Load custom tree-sitter grammar for org filetype
+        require('orgmode').setup_ts_grammar()
+
+        require('orgmode').setup({
+            org_agenda_files = {'~/orgmode/org/*'},
+            org_default_notes_file = '~/orgmode/org/refile.org',
+        })
+
+        -- symbols-outline
+        use 'simrat39/symbols-outline.nvim'
+        require("symbols-outline").setup({
+            symbols = {
+                File = {hl = "@text.uri" },
+                Module = {hl = "@namespace" },
+                Namespace = {hl = "@namespace" },
+                Package = {hl = "@namespace" },
+                Class = {hl = "@type" },
+                Method = {hl = "@method" },
+                Property = {hl = "@method" },
+                Field = {hl = "@field" },
+                Constructor = {hl = "@constructor" },
+                Enum = {hl = "@type" },
+                Interface = {hl = "@type" },
+                Function = {hl = "@function" },
+                Variable = {hl = "@constant" },
+                Constant = {hl = "@constant" },
+                String = {hl = "@string" },
+                Number = {hl = "@number" },
+                Boolean = {hl = "@boolean" },
+                Array = {hl = "@constant" },
+                Object = {hl = "@type" },
+                Key = {hl = "@type" },
+                Null = {hl = "@type" },
+                EnumMember = {hl = "@field" },
+                Struct = {hl = "@type" },
+                Event = {hl = "@type" },
+                Operator = {hl = "@operator" },
+                TypeParameter = {hl = "@parameter" },
+            },
+        })
+
+        -- winbar.nvim
+        -- use { 'fgheng/winbar.nvim' }
+        -- require('winbar').setup({ 
+        --     enabled = true,
+        --     show_symbols = true,
+        -- })
+
+        -- indent-blankline 
+        use { 'lukas-reineke/indent-blankline.nvim' }
+        require('indent_blankline').setup()
+
+        -- comment.nvim
+        use { 'numToStr/Comment.nvim' }
+        require('Comment').setup()
+
 end)
+

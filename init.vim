@@ -5,6 +5,8 @@ set nocompatible
 filetype off
 set termguicolors
 
+let g:tokyonight_style = "night"
+
 call plug#begin('~/.config/nvim/plugged')
 Plug 'marko-cerovac/material.nvim'
 Plug 'morhetz/gruvbox'
@@ -40,6 +42,16 @@ nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 nnoremap <leader>fr <cmd>lua require('telescope.builtin').oldfiles()<cr>
 nnoremap <leader>cs <cmd>lua require('telescope.builtin').colorscheme()<cr>
+nnoremap <leader>fs <cmd>lua require('telescope.builtin').treesitter()<cr>
+nnoremap gr <cmd>lua require('telescope.builtin').lsp_references()<cr>
+nnoremap gd <cmd>lua require('telescope.builtin').lsp_definitions()<cr>
+
+" ====================== material ======================
+nnoremap <leader>m :lua require('material.functions').toggle_style()<CR>
+
+" ====================== symbols-outline ======================
+map <C-s> :SymbolsOutline<CR>
+
 
 filetype plugin indent on
 syntax on
@@ -50,9 +62,19 @@ set nowrap
 set smartcase
 set hlsearch
 set noerrorbells
+set mouse=
 "set tabstop=4 softtabstop=4
+"set expandtab
+"set smartindent
+
+filetype plugin indent on
+" show existing tab with 4 spaces width
+set tabstop=4
+" when indenting with '>', use 4 spaces width
+set shiftwidth=4
+" On pressing tab, insert 4 spaces
 set expandtab
-set smartindent
+
 let mapleader = "\<Space>"
 
 lua require('plugins')
