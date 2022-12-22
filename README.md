@@ -1,4 +1,4 @@
-# My Neovim Config
+# my neovim config
 
 ![Image 2022-12-14 at 20 44](https://user-images.githubusercontent.com/44582972/209241227-43be0daa-6ab7-4bb1-a900-375dfacf4563.JPG)
 
