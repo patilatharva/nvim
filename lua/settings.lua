@@ -1,5 +1,6 @@
 vim.opt.termguicolors = true
 vim.g.mapleader = ' '
+vim.wo.number = true
 vim.o.background = 'dark'
 vim.opt.wrap = false
 vim.opt.smartcase = true
