@@ -4,6 +4,7 @@
     Github: https://github.com/patilatharva
 --]]
 
+require("impatient")
 require("settings")
 require("plugins")
 require("keymaps")

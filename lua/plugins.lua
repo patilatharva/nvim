@@ -1,5 +1,9 @@
 return require('packer').startup(function()
+        -- packer
         use 'wbthomason/packer.nvim'
+
+        -- impatient
+        use 'lewis6991/impatient.nvim'
 
         -- fugitive
         use 'tpope/vim-fugitive'

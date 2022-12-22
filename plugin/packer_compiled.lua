@@ -95,6 +95,11 @@ _G.packer_plugins = {
     path = "/Users/atharvapatil/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim",
     url = "https://github.com/lukas-reineke/indent-blankline.nvim"
   },
+  ["lingua-franca.vim"] = {
+    loaded = true,
+    path = "/Users/atharvapatil/.local/share/nvim/site/pack/packer/start/lingua-franca.vim",
+    url = "https://github.com/lf-lang/lingua-franca.vim"
+  },
   ["lsp_signature.nvim"] = {
     loaded = true,
     path = "/Users/atharvapatil/.local/share/nvim/site/pack/packer/start/lsp_signature.nvim",
@@ -174,6 +179,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/atharvapatil/.local/share/nvim/site/pack/packer/start/tokyonight.nvim",
     url = "https://github.com/folke/tokyonight.nvim"
+  },
+  ["vim-fugitive"] = {
+    loaded = true,
+    path = "/Users/atharvapatil/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    url = "https://github.com/tpope/vim-fugitive"
+  },
+  ["vim-startuptime"] = {
+    loaded = true,
+    path = "/Users/atharvapatil/.local/share/nvim/site/pack/packer/start/vim-startuptime",
+    url = "https://github.com/dstein64/vim-startuptime"
   }
 }
 
