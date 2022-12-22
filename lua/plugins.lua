@@ -1,4 +1,4 @@
-return require('packer').startup(function()
+return require('packer').startup(function(use)
     -- packer
     use 'wbthomason/packer.nvim'
 
@@ -42,7 +42,7 @@ return require('packer').startup(function()
     -- telescope
     use {
         'nvim-telescope/telescope.nvim',
-        requires = { 
+        requires = {
             'nvim-lua/plenary.nvim',
             'nvim-treesitter/nvim-treesitter'
 
@@ -87,7 +87,7 @@ return require('packer').startup(function()
         tag = 'nightly' -- optional, updated every week. (see issue #1193)
     }
     require('nvim-tree').setup({
-        update_focused_file = {enable = true, update_cwd = false}, 
+        update_focused_file = {enable = true, update_cwd = false},
         hijack_cursor = true,
         open_on_tab = true,
         git = {ignore = false},
@@ -96,7 +96,8 @@ return require('packer').startup(function()
             custom = {
                 '*.pyc', '.DS_Store', 'node_modules', '__pycache__', 'venv', '.git',
                 '*.dSYM'
-            }
+            },
+            dotfiles = true
         },
         view = {
             mappings = {
@@ -105,7 +106,6 @@ return require('packer').startup(function()
                 }
             }
         },
-        filters = {dotfiles = true}
     })
     -- startup.nvim
     use {
@@ -119,10 +119,13 @@ return require('packer').startup(function()
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
+
+    -- local navic = require("nvim-navic")
+
     require('lualine').setup({
         options = {
             theme = 'horizon'
-        }, 
+        },
         sections = {
             lualine_c = {
                 {
@@ -131,12 +134,18 @@ return require('packer').startup(function()
                     path = 2,
                 }
             }
-        }
+        },
+        -- winbar = {
+        --     lualine_c = {
+        --         -- { navic.get_location, navic.is_available},
+        --         {"filesize"}
+        --     }
+        -- },
     })
 
     -- bufferline
     use {
-        'akinsho/bufferline.nvim', tag = "v2.*", 
+        'akinsho/bufferline.nvim', tag = "v2.*",
         requires = 'kyazdani42/nvim-web-devicons'
     }
     require("bufferline").setup{
@@ -235,5 +244,23 @@ return require('packer').startup(function()
     -- lsp_signature.nvim
     use "ray-x/lsp_signature.nvim"
     require "lsp_signature".setup({hint_prefix=""})
+
+    -- barbecue
+    use({
+        "utilyre/barbecue.nvim",
+        requires = {
+            "neovim/nvim-lspconfig",
+            "smiteshp/nvim-navic",
+            "kyazdani42/nvim-web-devicons", -- optional dependency
+        },
+        after = "nvim-web-devicons", -- keep this if you're using NvChad
+        config = function()
+            require("barbecue").setup()
+        end,
+    })
+
+    require("barbecue").setup({
+        attach_navic = false, -- prevent barbecue from automatically attaching nvim-navic
+    })
 end)
 
