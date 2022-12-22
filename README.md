@@ -20,4 +20,4 @@
 ### git diff view
 ![Image 2022-12-23 at 7 48](https://user-images.githubusercontent.com/44582972/209241596-4da7ba6f-bab5-49f6-b9b6-82cde61b947a.JPG)
 
-### etc
+### etc.
