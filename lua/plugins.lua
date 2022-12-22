@@ -1,4 +1,15 @@
 return require('packer').startup(function()
+        use 'wbthomason/packer.nvim'
+
+        -- fugitive
+        use 'tpope/vim-fugitive'
+        
+        -- lingua-franca
+        use 'lf-lang/lingua-franca.vim'
+
+        -- startup-time
+        use 'dstein64/vim-startuptime'
+
         -- themes
         use 'folke/tokyonight.nvim'
         require('tokyonight').setup({
@@ -7,15 +18,8 @@ return require('packer').startup(function()
             }
         })
         
-        use 'tiagovla/tokyodark.nvim'
-        use 'bluz71/vim-nightfly-guicolors'
-        use({
-            'rose-pine/neovim',
-            as = 'rose-pine',
-            tag = 'v1.*',
-        })
-        use "EdenEast/nightfox.nvim"
-
+        use 'nvim-lua/plenary.nvim'
+        use 'kyazdani42/nvim-web-devicons'
         use 'marko-cerovac/material.nvim'
         vim.g.material_style = "deep ocean"
         require('material').setup({
@@ -31,8 +35,6 @@ return require('packer').startup(function()
             }
         })
 
-        vim.cmd[[colorscheme tokyonight-night]]
-
         -- telescope
         use {
           'nvim-telescope/telescope.nvim',
@@ -42,30 +44,29 @@ return require('packer').startup(function()
                         
           }
         }
-        require("telescope").load_extension("emoji")
-        
-        use {
-          'xiyaowong/telescope-emoji.nvim',
-          requires = {"nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"},
-        }
-        -- require('telescope.builtin').builtin({include_extensions = true})
-        vim.keymap.set('n', '<leader>t', function()
-          require('telescope.builtin').builtin { include_extensions = true }
-        end)
 
         -- treesitter
-
         use {
           'nvim-treesitter/nvim-treesitter',
           run = ':TSUpdate'
-        }        
+        }
+
+        local langs = {
+            'org',
+            'python',
+            'go',
+            'gomod',
+            'java',
+            'html',
+            'javascript',
+        }
 
         require'nvim-treesitter.configs'.setup {
-            highlight = {                                                                 
-                 enable = true,                                                            
-                 additional_vim_regex_highlighting = {'org', 'python'}, -- Required for spellcheck, s
-             },                                                                            
-             ensure_installed = {'org', 'python'}, -- Or run :TSUpdate org
+            highlight = {
+                enable = true,
+                additional_vim_regex_highlighting = langs,
+            },
+            ensure_installed = langs,
         }
 
         -- devicons
@@ -118,33 +119,16 @@ return require('packer').startup(function()
             options = {
                 theme = 'horizon'
             }, 
-            --[[
             sections = {
-                lualine_x = { 
-                    require('weather.lualine').default_c({}) 
+                lualine_c = {
+                    {
+                        'filename',
+                        file_status = true,
+                        path = 2,
+                    }
                 }
             }
-            --]]
         })
-
-        
-        --[[ weather.nvim
-        use {
-            'wyattjsmith1/weather.nvim',
-            requires = {
-                "nvim-lua/plenary.nvim",
-            }
-        }
-
-        require'weather'.setup {
-            openweathermap = {
-            app_id = {
-                value = "b06e759f9769b38583ee0a79998b3ca9"
-            }
-            },
-            weather_icons = require('weather.other_icons').nerd_font,
-        }
-        ]]--
 
         -- bufferline
         use {
@@ -166,59 +150,60 @@ return require('packer').startup(function()
                 show_buffer_close_icons = false,
                 show_close_icon = false,
                 -- chrome style separators
-                -- separator_style = "slant"
+                separator_style = "slant"
             }
+        }
+
+        -- nvim-navic
+        use {
+            "SmiteshP/nvim-navic",
+            requires = {"neovim/nvim-lspconfig"}
         }
 
         -- LSP configs
         use 'neovim/nvim-lspconfig' -- Configurations for Nvim LSP
-        require'lspconfig'.clangd.setup{}
-        require'lspconfig'.pyright.setup{}
-        require'lspconfig'.jdtls.setup{
-           cmd = { 'jdtls' },
-           root_dir = function(fname)
-              return require'lspconfig'.util.root_pattern('pom.xml', 'gradle.build', '.git')(fname) or vim.fn.getcwd()
-           end
-        }
-
-        -- Mappings.
-        -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-        local opts = { noremap=true, silent=true }
-        vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-        vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-        vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-        vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
-
+ 
         -- Use an on_attach function to only map the following keys
         -- after the language server attaches to the current buffer
         local on_attach = function(client, bufnr)
-          -- Enable completion triggered by <c-x><c-o>
-          vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+            -- Enable completion triggered by <c-x><c-o>
+            vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-          -- Mappings.
-          -- See `:help vim.lsp.*` for documentation on any of the below functions
-          local bufopts = { noremap=true, silent=true, buffer=bufnr }
-          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-          -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-          vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-          vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-          -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-          vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-          vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-          vim.keymap.set('n', '<space>wl', function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-          end, bufopts)
-          vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-          vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-          vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-          -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-          -- vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
+            -- Mappings.
+            -- See `:help vim.lsp.*` for documentation on any of the below functions
+            local bufopts = { noremap=true, silent=true, buffer=bufnr }
+            vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+            -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+            vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+            vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+            -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+            vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+            vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+            vim.keymap.set('n', '<space>wl', function()
+                print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+            end, bufopts)
+            vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+            vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+            vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+            -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+            -- vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
+            
+            -- Attach navic to active buffer.
+            if client.server_capabilities.documentSymbolProvider then
+                local navic = require("nvim-navic")
+                navic.setup({
+                    highlight = true,
+                    separator = '  ',
+                })
+                navic.attach(client, bufnr)
+            end
         end
 
         local lsp_flags = {
           -- This is the default in Nvim 0.7+
           debounce_text_changes = 150,
         }
+        require'lspconfig'.clangd.setup{}
         require('lspconfig')['pyright'].setup{
             on_attach = on_attach,
             flags = lsp_flags,
@@ -235,6 +220,25 @@ return require('packer').startup(function()
               ["rust-analyzer"] = {}
             }
         }
+        require'lspconfig'.gopls.setup{
+            on_attach = on_attach,
+            flags = lsp_flags,
+        }
+        require'lspconfig'.jdtls.setup{
+           cmd = { 'jdtls' },
+           root_dir = function(fname)
+                    return require'lspconfig'.util.root_pattern('pom.xml', 'gradle.build', '.git')(fname) or vim.fn.getcwd()
+                end,
+           on_attach = on_attach,
+           flags = lsp_flags,
+        }
+        require'lspconfig'.html.setup{
+            on_attach = on_attach,
+            flags = lsp_flags,
+        }
+
+        local location = require("nvim-navic").get_location()
+        vim.o.winbar = "%{%' ' . v:lua.require'nvim-navic'.get_location()%}"
 
         -- gitsigns
         use {
@@ -249,23 +253,9 @@ return require('packer').startup(function()
         use("petertriho/nvim-scrollbar")
         require("scrollbar").setup()
 
-
-        -- orgmode
-        use {'nvim-orgmode/orgmode', config = function()
-                require('orgmode').setup{}
-            end
-        }
-
-        -- Load custom tree-sitter grammar for org filetype
-        require('orgmode').setup_ts_grammar()
-
-        require('orgmode').setup({
-            org_agenda_files = {'~/orgmode/org/*'},
-            org_default_notes_file = '~/orgmode/org/refile.org',
-        })
-
         -- symbols-outline
         use 'simrat39/symbols-outline.nvim'
+
         require("symbols-outline").setup({
             symbols = {
                 File = {hl = "@text.uri" },
@@ -297,13 +287,6 @@ return require('packer').startup(function()
             },
         })
 
-        -- winbar.nvim
-        -- use { 'fgheng/winbar.nvim' }
-        -- require('winbar').setup({ 
-        --     enabled = true,
-        --     show_symbols = true,
-        -- })
-
         -- indent-blankline 
         use { 'lukas-reineke/indent-blankline.nvim' }
         require('indent_blankline').setup()
@@ -312,5 +295,18 @@ return require('packer').startup(function()
         use { 'numToStr/Comment.nvim' }
         require('Comment').setup()
 
+        -- markdown-preview
+        use({
+            "iamcco/markdown-preview.nvim",
+            run = function() vim.fn["mkdp#util#install"]() end,
+        })
+
+        -- cellular-automation.nvim
+        use 'eandrju/cellular-automaton.nvim'
+        vim.keymap.set("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
+
+        -- lsp_signature.nvim
+        use "ray-x/lsp_signature.nvim"
+        require "lsp_signature".setup({hint_prefix=""})
 end)
 

@@ -20,7 +20,7 @@ function functions.packer_plugins()
     if packer_plugins then
         return {
             string.format(
-                "Total plugins (packer.nvim): %d",
+                "total plugins (packer.nvim): %d",
                 vim.tbl_count(packer_plugins)
             ),
         }
