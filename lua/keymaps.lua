@@ -1,8 +1,7 @@
 local utils = require("utils")
 
--- TELESCOPE
+-- telescope
 local builtin = require('telescope.builtin')
-
 utils.map("n", "<leader>t", function()
     builtin.builtin { include_extensions = true }
 end)
@@ -18,7 +17,11 @@ utils.map("n", "gd", builtin.lsp_definitions)
 
 -- material theme
 utils.map("n", "<leader>m", require('material.functions').toggle_style)
+
+-- symbols outline
 utils.map("n", "<c-s>", ":SymbolsOutline<cr>")
+
+-- nvim-tree
 utils.map("n", "<c-n>", ":NvimTreeToggle<cr>")
 utils.map("n", "<leader>n", ":NvimTreeFocus<cr>")
 
