@@ -273,5 +273,22 @@ return require('packer').startup(function(use)
     use 'hrsh7th/cmp-cmdline'
     use 'hrsh7th/nvim-cmp'
     use 'saadparwaiz1/cmp_luasnip'
+
+    -- diffview
+    use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
+
+    -- autoclose
+    use 'm4xshen/autoclose.nvim'
+    require("autoclose").setup({})
+
+    -- twilight
+    use {
+        "folke/twilight.nvim",
+        config = function()
+            require("twilight").setup({
+                context = 20
+            })
+        end
+    }
 end)
 
