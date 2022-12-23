@@ -14,8 +14,11 @@
 ### symbol references/definitions
 ![Image 2022-12-15 at 2 38](https://user-images.githubusercontent.com/44582972/209241436-cfda0347-14a6-4df0-a70e-23703ab7cc9d.JPG)
 
-### browse document symbols
+### browse document/workspace symbols
 ![Image 2022-12-23 at 7 40](https://user-images.githubusercontent.com/44582972/209241469-04436628-da47-43e5-824e-fe70513542d6.JPG)
+
+### live grep
+![Screen Shot 2022-12-23 at 9 08 05](https://user-images.githubusercontent.com/44582972/209245760-c88d6066-34e9-4df3-a847-c6c4770b6bb0.png)
 
 ### git diff view
 ![Image 2022-12-23 at 7 48](https://user-images.githubusercontent.com/44582972/209241596-4da7ba6f-bab5-49f6-b9b6-82cde61b947a.JPG)
