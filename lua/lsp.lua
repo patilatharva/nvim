@@ -65,7 +65,11 @@ require'lspconfig'.gopls.setup{
 require'lspconfig'.jdtls.setup{
     cmd = { 'jdtls' },
     root_dir = function(fname)
-        return require'lspconfig'.util.root_pattern('pom.xml', 'gradle.build', '.git')(fname) or vim.fn.getcwd()
+        return require'lspconfig'.util.root_pattern(
+            'build.gradle',
+            'pom.xml',
+            '.git'
+        )(fname) or vim.fn.getcwd()
     end,
     on_attach = on_attach,
     flags = lsp_flags,
