@@ -175,6 +175,7 @@ return require('packer').startup(function(use)
 
     -- LSP configs
     use 'neovim/nvim-lspconfig' -- Configurations for Nvim LSP
+    require('lspconfig.ui.windows').default_options.border = 'single'
 
     -- gitsigns
     use {
@@ -319,6 +320,14 @@ return require('packer').startup(function(use)
 
     -- if you only want these mappings for toggle term use term://*toggleterm#* instead
     vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
+    -- goto-preview
+    use {
+        'rmagatti/goto-preview',
+        config = function()
+            require('goto-preview').setup {}
+        end
+    }
 
 end)
 
