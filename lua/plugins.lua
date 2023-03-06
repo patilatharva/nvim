@@ -104,8 +104,15 @@ return require('packer').startup(function(use)
                 list = {
                     {key = "<CR>",          action = "tabnew"}
                 }
-            }
+            },
         },
+        actions = {
+            file_popup = {
+                open_win_config = {
+                    border = "rounded"
+                }
+            }
+        }
     })
     -- startup.nvim
     use {
@@ -315,7 +322,7 @@ return require('packer').startup(function(use)
         vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
         vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
         vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-        vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+        -- vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
     end
 
     -- if you only want these mappings for toggle term use term://*toggleterm#* instead
@@ -329,5 +336,9 @@ return require('packer').startup(function(use)
         end
     }
 
+    -- dressing
+    require('packer').startup(function()
+        use {'stevearc/dressing.nvim'}
+    end)
 end)
 

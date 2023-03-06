@@ -35,6 +35,11 @@ utils.map("n", "<c-j>", ":bp<cr>")
 utils.map("n", "<c-k>", ":bn<cr>")
 utils.map("n", "<c-l>", ":bd<cr>")
 
+-- toggleterm
+utils.map("n", "<leader>bv", ":ToggleTerm direction=vertical<cr>")
+utils.map("n", "<leader>bf", ":ToggleTerm direction=float<cr>")
+utils.map("n", "<leader>bh", ":ToggleTerm direction=horizontal<cr>")
+
 -- goto-preview
 utils.map("n", "gpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", {noremap=true})
 utils.map("n", "gpt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", {noremap=true})
