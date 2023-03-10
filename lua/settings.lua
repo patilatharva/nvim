@@ -12,5 +12,3 @@ vim.wo.number = true
 vim.wo.cursorline = true
 vim.g.mapleader = ' '
 vim.cmd('set mouse=')
-
-vim.cmd[[colorscheme tokyonight-storm]]
